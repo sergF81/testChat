@@ -70,7 +70,7 @@ class ChatService {
         return ("Chat with the given ID was not found")
     }
 
-    fun edit(id: Int, idU: Int, messageEdit: String):String{
+    fun edit(id: Int, idU: Int, messageEdit: String): String {
         for ((chatIndex, chat) in chats.withIndex()) {
             for ((chatMessageIndex, chatMessage) in chat.messages.withIndex()) {
                 if (chat.messages[chatMessageIndex].idUser == idU && chat.messages[chatMessageIndex].idMessage == id) {
@@ -82,5 +82,28 @@ class ChatService {
             }
         }
         return ("Message with the given ID was not found")
+    }
+
+    fun listUnreadChat(): Int {
+        var unreadMessage: Int = 0
+        for ((chatIndex, chat) in chats.withIndex()) {
+            for ((chatMessageIndex, chatMessage) in chat.messages.withIndex()) {
+                if (chat.messages[chatMessageIndex].readMessage == false) {
+                    unreadMessage += 1
+                    break
+                }
+            }
+        }
+        return unreadMessage
+    }
+
+    fun getChat(): MutableList<Chat> {
+        val listChat: MutableList<Chat> = arrayListOf()
+        for ((index, chat) in chats.withIndex()) {
+            if (!chats[index].messages.isEmpty()) listChat.add(chat)
+        }
+        if (listChat.isEmpty()) println("You do not have a messages!")
+        else return listChat
+        return listChat
     }
 }
