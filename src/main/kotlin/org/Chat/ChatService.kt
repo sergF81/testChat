@@ -56,10 +56,31 @@ class ChatService {
         for ((index, message) in messages.withIndex()) {
             if (messages[index].idUser == idU && messages[index].idMessage == id) {
                 messages.removeAt(index)
-                println(messages[index].idMessage)
+                for ((chatIndex, chat) in chats.withIndex()) {
+                    for ((chatMessageIndex, chatMessage) in chat.messages.withIndex()) {
+                        if (chat.messages[chatMessageIndex].idUser == idU && chat.messages[chatMessageIndex].idMessage == id) {
+                            chat.messages.removeAt(chatMessageIndex)
+                            break
+                        }
+                    }
+                }
                 return ("Chat with this ID deleted")
             }
         }
         return ("Chat with the given ID was not found")
+    }
+
+    fun edit(id: Int, idU: Int, messageEdit: String):String{
+        for ((chatIndex, chat) in chats.withIndex()) {
+            for ((chatMessageIndex, chatMessage) in chat.messages.withIndex()) {
+                if (chat.messages[chatMessageIndex].idUser == idU && chat.messages[chatMessageIndex].idMessage == id) {
+                    val chatNew = chat.copy()
+                    chat.messages[chatMessageIndex].messageUser = messageEdit
+                    return ("Message with this ID edited")
+                    break
+                }
+            }
+        }
+        return ("Message with the given ID was not found")
     }
 }
